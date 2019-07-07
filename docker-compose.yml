@@ -1,0 +1,19 @@
+discourse:
+  image: vanessa/discourse
+  ports:
+    - "3000:3000"
+  links:
+    - postgres
+    - redis
+  env_file:
+    - .env
+
+postgres:
+  image: postgres:9.4
+  environment:
+    - POSTGRES_USER=discourse
+  env_file:
+    - .env
+
+redis:
+  image: redis:2.6
