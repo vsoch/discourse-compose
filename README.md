@@ -14,7 +14,7 @@ First, build the container like this. This will clone `DISCOURSE_VERSION`
 so that the container will run discourse without any volumes mounted:
 
 ```bash
-docker build -t vanessa/discourse
+$ docker build -t vanessa/discourse .
 ```
 
 ## Start containers
