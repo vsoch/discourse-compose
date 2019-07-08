@@ -1,19 +1,35 @@
-discourse:
-  image: vanessa/discourse
-  ports:
-    - "3000:3000"
-  links:
-    - postgres
-    - redis
-  env_file:
-    - .env
+version: '2'
+services:
+  discourse:
+    image: vanessa/discourse
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    links:
+      - postgres
+      - redis
+    env_file:
+      - .env
 
-postgres:
-  image: postgres:9.4
-  environment:
-    - POSTGRES_USER=discourse
-  env_file:
-    - .env
+  sidekiq:
+    image: vanessa/discourse
+    command: bundle exec sidekiq
+    depends_on:
+      - discourse
+    links:
+      - postgres
+      - redis
+    env_file:
+      - .env
+  
+  postgres:
+    image: postgres:10
+    environment:
+      - POSTGRES_USER=discourse
+    env_file:
+      - .env
 
-redis:
-  image: redis:2.6
+  redis:
+    image: redis:2.8

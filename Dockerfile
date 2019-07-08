@@ -39,14 +39,28 @@ RUN export PATH="$HOME/.rbenv/bin:$PATH" && \
 
 RUN git clone https://github.com/discourse/discourse.git /usr/src/app && \
   cd /usr/src/app && \
-  gem install bundler && \
-  bundle install
-  # Example of install without development
-  # bundle install --deployment --without test --without development
+  sed -i 's/redis_host = localhost/redis_host = $DISCOURSE_REDIS_HOST/' config/discourse_defaults.conf && \
+  cat config/discourse_defaults.conf | grep redis_host && \
+  gem install bundler
 
-ENV RAILS_ENV production
-ENV DISCOURSE_REDIS_HOST=redis
 WORKDIR /usr/src/app
+RUN bundle install
+RUN gem pristine --all
+# Example of install without development
+# bundle install --deployment --without test --without development
+
+# Random errors
+RUN gem install excon && \
+    sed -i 's/uglified, map = Uglifier.new(comments: :none,/uglified, map = Uglifier.new(comments: :none, harmony:true,/' lib/tasks/assets.rake && \
+    mkdir -p public/uploads
+
+RUN git clone https://github.com/google/brotli && \
+    apt-get install -y cmake && \
+    cd brotli && \
+    mkdir out && cd out && \
+    ../configure-cmake && make && make install
+
+ENV RAILS_ENV=production
 ADD run_server.sh /usr/src/app
 
 EXPOSE 3000
