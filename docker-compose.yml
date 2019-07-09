@@ -15,7 +15,7 @@ services:
 
   sidekiq:
     image: vanessa/discourse
-    command: bundle exec sidekiq
+    command: sidekiq -c 3 -v # bundle exec sidekiq
     depends_on:
       - discourse
     links:
