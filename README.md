@@ -100,7 +100,7 @@ and you can log in with the account you created:
 If you didn't create one, it's going to show you the registration page (and it
 won't really work to send a verification email:
 
-![discourse-congrats.png](discourse-congrats.png)
+![img/discourse-congrats.png](img/discourse-congrats.png)
 
 This took me a few days to figure out, and it would allow for development on a
 "production" install. The other option that got working for me on Ubuntu 18.04
