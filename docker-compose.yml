@@ -2,8 +2,9 @@ version: '2'
 services:
   discourse:
     image: vanessa/discourse
+    container_name: discourse
     ports:
-      - "3000:3000"
+      - "80:80"
     depends_on:
       - postgres
       - redis
@@ -15,6 +16,7 @@ services:
 
   sidekiq:
     image: vanessa/discourse
+    container_name: sidekiq
     command: sidekiq -c 3 -v # bundle exec sidekiq
     depends_on:
       - discourse
@@ -26,10 +28,12 @@ services:
   
   postgres:
     image: postgres:10
+    container_name: postgres
     environment:
       - POSTGRES_USER=discourse
     env_file:
       - .env
 
   redis:
+    container_name: redis
     image: redis:2.8

@@ -55,7 +55,7 @@ RUN gem install excon && \
     mkdir -p public/uploads
 
 RUN git clone https://github.com/google/brotli && \
-    apt-get install -y cmake && \
+    apt-get install -y cmake libjemalloc-dev && \
     cd brotli && \
     mkdir out && cd out && \
     ../configure-cmake && make && make install
@@ -63,6 +63,6 @@ RUN git clone https://github.com/google/brotli && \
 ENV RAILS_ENV=production
 ADD run_server.sh /usr/src/app
 
-EXPOSE 3000
+EXPOSE 80
 ADD run_server.sh /usr/src/app
 CMD ["/bin/bash", "/usr/src/app/run_server.sh"]
